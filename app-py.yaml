@@ -1,0 +1,37 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: app-py
+  namespace: default
+  labels:
+    app: app-py
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-py
+  template:
+    metadata:
+      labels:
+        app: app-py
+    spec:
+      containers:
+      - name: app-py
+        image: "abinayaelango/jen-docker:latest"
+        ports:
+          - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-py
+  namespace: default
+spec:
+  selector:
+    app: app-py
+  type: LoadBalancer
+  ports:
+  - name: http
+    targetPort: 3000
+    port: 80
